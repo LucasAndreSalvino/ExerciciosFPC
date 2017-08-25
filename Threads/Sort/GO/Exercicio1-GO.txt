@@ -1,0 +1,64 @@
+package main
+
+import (
+	"fmt"
+	"time"
+	"runtime"
+)
+
+func SortAux(arr[] int, inicio int, fim int)[]int {
+
+	/* Ordena apenas uma fatia especifica do array */
+	
+	for i:=inicio; i< fim; i++ {
+		for j:=0; j < len(arr)-i; j++ {
+			if (arr[j] > arr[j+1]) {
+				arr[j], arr[j+1] = arr[j+1], arr[j]
+			}
+		}
+	}
+	return arr
+}
+
+/* Recebe um array e o numero de goroutines que irão ordenar no array  */
+
+func goroutineSort(arr[] int, numeroDeThreads int)[]int {
+	var numeroDePartes int =  len(arr)/numeroDeThreads
+	var contador int = 1
+	
+	for i:=0; i< numeroDeThreads; i++ {
+		/* Inicia um goroutine que ordena apenas o seu pedaço do array */
+		
+		go SortAux(arr, contador, contador+numeroDePartes)
+		
+		contador=contador+numeroDePartes
+		
+	}
+	/* Imprime o numero de rotinas em execução */
+	/* Mostra o numero de rotinas rodando neste momento. O resultado é superior ao de rotinas que ordenam por que o Main ja conta como uma rotina */
+	fmt.Println("Numero de rotinas executando:")
+	fmt.Println(runtime.NumGoroutine())
+	
+	
+	
+	/* Espera um tempo para que todas as rotinas terminem o seu serviço */
+	time.Sleep(time.Second * 2)
+	/* Imprime o array ordenado */
+	fmt.Println(arr)
+	
+	return arr
+}
+
+
+func main() {
+	fmt.Println("----------------Goroutine Sort----------------")
+	
+	/* Imprime o numero de rotinas inicial como 1 para mostrar que o main conta como uma rotina */
+	
+	fmt.Println(runtime.NumGoroutine())
+	var bubble []int = []int{3,1,2,3,2,1,5,5,4,6,5,4,5,4,8,84,56}
+	
+	goroutineSort(bubble,19)
+	
+	
+}

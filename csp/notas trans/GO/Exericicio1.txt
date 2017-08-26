@@ -1,0 +1,61 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func ConversorDeNotasLatinasAux(arr[] string, inicio int, fim int)[]string {
+
+	for i:=inicio; i< fim; i++ {
+		
+		if (arr[i] == "Do") {
+			arr[i] = "C"
+			
+		}
+		
+		if (arr[i] == "Re") {
+			arr[i] = "D"
+			
+		}
+		if (arr[i] == "Mi") {
+			arr[i] = "E"
+			
+		}
+		if (arr[i] == "Fa") {
+			arr[i] = "F"
+			
+		}
+		if (arr[i] == "Sol") {
+			arr[i] = "G"
+			
+		}
+		if (arr[i] == "La") {
+			arr[i] = "A"
+			
+		}
+		
+		if (arr[i] == "Si") {
+			arr[i] = "B"
+			
+		}
+	}
+	return arr
+}
+func ConversorDeNotasLatinas(arr[] string, nivelDeParalelismo int)[]string {
+	var numeroDePartes int =  len(arr)/nivelDeParalelismo
+	var contador int = 0
+	for i:=0; i< nivelDeParalelismo; i++ {
+		go ConversorDeNotasLatinasAux(arr, contador, contador+numeroDePartes)
+		
+		contador=contador+numeroDePartes
+	}
+	return arr
+}
+
+func main() {
+	args := []string{"Do", "Re"}
+	ConversorDeNotasLatinas(args, 2)
+	time.Sleep(time.Second * 2)
+	fmt.Println(args)
+}

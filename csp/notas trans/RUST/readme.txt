@@ -1,0 +1,1 @@
+Para executar o programa basta executar o arquivo .exe dentro da pasta questao1/target/debug.

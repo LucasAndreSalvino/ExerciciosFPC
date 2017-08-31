@@ -1,0 +1,6 @@
+[package]
+name = "questao3"
+version = "0.1.0"
+authors = ["smokfugiu <lucas.salvino@ccc.ufcg.edu.br>"]
+
+[dependencies]

@@ -1,0 +1,66 @@
+package main
+
+import (
+	"fmt"
+	"strconv"
+	
+)
+
+
+
+
+
+func producer(canal chan string, bufferSize int, id int) {
+    for i := 0; i < 10*bufferSize; i++ {
+	t := strconv.Itoa(i)
+	ident := strconv.Itoa(id)
+        canal <- "producerID:"+ident+" ; produced:"+t
+    }
+   
+}
+
+
+func consumer(canal chan string, id int) {
+    for {
+      msg := <-canal
+      ident := strconv.Itoa(id)
+      fmt.Println("ConsumerID:"+ident+" Consumed:("+msg+")")
+      
+   }
+  
+}
+
+func consumerFactory(numbersOfConsumers int, canal chan string){
+	for id:=0; id<numbersOfConsumers; id++ {
+   		go consumer(canal, id)
+		
+	}
+	
+}
+
+func producerFactory(numbersOfProducers int, canal chan string, bufferSize int){
+	for id:=0; id<numbersOfProducers; id++ {
+   		go producer(canal, bufferSize, id)
+	}
+}
+
+func producerConsumerQuestion(numbersOfProducers int, numbersOfConsumers int, bufferSize int) {
+	var msgs = make(chan string, bufferSize)
+	var done = make(chan bool)
+	
+	go producerFactory(numbersOfProducers, msgs, bufferSize)
+        go consumerFactory(numbersOfConsumers, msgs)
+	
+	
+	
+	done<-true
+   	<-done
+	
+	
+}
+
+func main() {
+	producerConsumerQuestion(3,2, 1)
+	
+	
+}

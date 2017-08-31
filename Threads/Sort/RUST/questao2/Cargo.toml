@@ -1,0 +1,8 @@
+[package]
+name = "questao2"
+version = "0.1.0"
+authors = ["smokfugiu <lucas.salvino@ccc.ufcg.edu.br>"]
+
+[dependencies]
+scoped_threadpool = "0.1.*"
+
